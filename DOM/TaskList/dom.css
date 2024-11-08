@@ -1,0 +1,40 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+#lista {
+    margin: 20px 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.prioridad-red {
+    background-color: #fc5555; 
+}
+
+.prioridad-orange {
+    background-color: #deaa43; 
+}
+
+.prioridad-green {
+    background-color: #71e971; 
+}
+
+li:hover {
+    background-color: #eaeaea;
+}

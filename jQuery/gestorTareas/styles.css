@@ -1,0 +1,12 @@
+/* styles.css */
+.hovered {
+    background-color: #f0f0f0;
+}
+
+.important {
+    background-color: yellow;
+}
+
+.completed {
+    text-decoration: line-through;
+}
