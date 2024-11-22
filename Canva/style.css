@@ -1,0 +1,17 @@
+.canvaCont {
+    display: flex;
+    justify-content: space-between; /* Un canvas a la izquierda y otro a la derecha */
+    align-items: center; /* Alinea verticalmente si los tamaños son diferentes */
+    padding-right:200px;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+button {
+    position: absolute; /* Fija el botón */
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Tutorial</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="canvaCont">
+        <canvas id="rotacion" width="500" height="500"></canvas>
+        <div id="planetario">
+            <h3 id="nombrePlaneta"></h3>
+            <canvas id="sistemaSolar" width="250" height="250"></canvas>
+        </div>
+    </div>
+    <button id="boton">Mover/Parar</button>
+
+    <script>
+        const canvas = document.getElementById('rotacion');
+        const ctx = canvas.getContext('2d');
+        const boton = document.getElementById('boton');
+
+        const imgSol = new Image();
+        imgSol.src = '/images/sol.png';
+
+        const imgTierra = new Image();
+        imgTierra.src = '/images/tierra.png';
+
+        startPlanetarium();
+
+        let isRunning = false; // Controlar si la animación está activa
+        const radius = 150; // Radio de la órbita
+        let angle = 0; // Ángulo inicial de la Tierra
+        const speed = 0.02; // Velocidad de rotación
+
+        // Función para dibujar el sistema principal
+        function draw() {
+            if (!isRunning) return; // Salir si no está activa la animación
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+
+            // Centrar el sistema solar
+            ctx.save();
+
+            // Cambio de la posicion de inicio por defecto del canva
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+
+            // Dibujar el Sol centrado
+            ctx.drawImage(imgSol, -imgSol.width / 2, -imgSol.height / 2);
+
+            // Dibujar la órbita
+            ctx.beginPath();
+            ctx.strokeStyle = 'black';
+            ctx.arc(0, 0, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.closePath();
+
+            // Calcular posición de la Tierra
+            // NO EXPLICADO - GPT
+            const x = radius * Math.cos(angle);
+            const y = radius * Math.sin(angle);
+
+            // Dibujar la Tierra
+            ctx.drawImage(imgTierra, x - imgTierra.width / 2, y - imgTierra.height / 2);
+
+            ctx.restore(); // Restaurar el contexto
+
+            angle += speed; // Incrementar el ángulo para el movimiento
+
+            requestAnimationFrame(draw); // Continuar la animación eficientemente
+        }
+
+        // Botón para iniciar la animación
+        boton.addEventListener('click', () => {
+            if (!isRunning) {
+                isRunning = true; // Activar la animación
+                draw(); // Iniciar la animación
+            }
+        });
+
+        // Iniciar la animación cuando ambas imágenes estén cargadas
+        imgSol.onload = imgTierra.onload = function () {
+            draw();
+        };
+
+        function startPlanetarium() {
+            const canvas2 = document.getElementById('sistemaSolar');
+            const ctx2 = canvas2.getContext('2d');
+            const nombrePlaneta = document.getElementById('nombrePlaneta');
+
+            const images = ['/images/jupiter.jpg', '/images/marte.jpg',
+                            '/images/mercurio.jpg', '/images/neptuno.jpg', 
+                            '/images/saturno.jpg', '/images/tierra.jpg', 
+                            '/images/urano.jpg', '/images/venus.jpg'];
+            const names = ['Jupiter', 'Marte', 
+                           'Mercurio', 'Neptuno', 
+                           'Saturno', 'Tierra', 
+                           'Urano', 'Venus'];
+
+            var millisecondsToWait = 2000;
+
+            let currentIndex = 0;
+
+            setInterval(function () {
+    
+            nombrePlaneta.textContent = names[currentIndex];
+
+            const imgAr = new Image();
+            imgAr.src = images[currentIndex];
+
+
+            imgAr.onload = function () {
+                ctx2.drawImage(imgAr, 0, 0, canvas2.width, canvas2.height); // Dibuja la imagen cargada
+            };
+
+            // Asegúrate de que `names` tiene un nombre en el índice actual
+            
+            currentIndex++; // Avanza al siguiente índice
+            if (currentIndex >= images.length) {
+                currentIndex = 0; // Reinicia el índice cuando llega al final
+            }
+        }, millisecondsToWait);
+
+        }
+
+    </script>
+</body>
+
+</html>
+
+<!--
+------------------------------------------------
+Ejemplo planetario con requestAnimationFrame() by GPT
+------------------------------------------------
+
+
+ function startPlanetarium() {
+            const canvas2 = document.getElementById('sistemaSolar');
+            const ctx2 = canvas2.getContext('2d');
+            const nombrePlaneta = document.getElementById('nombrePlaneta');
+
+            const images = [
+                '/images/jupiter.jpg', '/images/marte.jpg', '/images/mercurio.jpg',
+                '/images/neptuno.jpg', '/images/saturno.jpg', '/images/tierra.jpg',
+                '/images/urano.jpg', '/images/venus.jpg'
+            ];
+            const names = ['Jupiter', 'Marte', 'Mercurio', 'Neptuno', 'Saturno', 'Tierra', 'Urano', 'Venus'];
+
+            let currentIndex = 0;
+            const delay = 2000; // Tiempo entre cambios en milisegundos
+            let lastUpdate = Date.now(); // Marca de tiempo inicial
+
+            function updatePlanet() {
+                if (!isRunning) return; // Detener si la animación está desactivada
+
+                const now = Date.now();
+                if (now - lastUpdate >= delay) { // Comprobar si ha pasado el tiempo suficiente
+                    nombrePlaneta.textContent = names[currentIndex]; // Cambiar el nombre del planeta
+
+                    const imgAr = new Image();
+                    imgAr.src = images[currentIndex];
+
+                    imgAr.onload = function () {
+                        ctx2.clearRect(0, 0, canvas2.width, canvas2.height); // Limpiar el canvas
+                        ctx2.drawImage(imgAr, 0, 0, canvas2.width, canvas2.height); // Dibujar el planeta
+                    };
+
+                    currentIndex++; // Avanzar al siguiente planeta
+                    if (currentIndex >= images.length) {
+                        currentIndex = 0; // Reiniciar el índice cuando llega al final
+                    }
+
+                    lastUpdate = now; // Actualizar la marca de tiempo
+                }
+
+                requestAnimationFrame(updatePlanet); // Continuar con la animación
+            }
+
+            updatePlanet(); // Iniciar la animación del planetario
+        }
+
+-->

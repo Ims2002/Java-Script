@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Tutorial</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="tutorial" width="500" height="250"></canvas><br>
+    <button id="boton">Mover/Parar</button>
+
+    <script>
+        const canvas = document.getElementById('tutorial');
+        const ctx = canvas.getContext('2d');
+        const boton = document.getElementById('boton');
+
+        const bola = {
+            x: 50,
+            y: canvas.height - 50,
+            radio: 50,
+            color: "yellow",
+            velocidad: 2,
+            estaMoviendose: false
+        };
+
+        let animationFrame;
+
+        // Dibujar la bola
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.arc(bola.x, bola.y, bola.radio, 0, Math.PI * 2);
+            ctx.fillStyle = bola.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Mover la bola
+        function move() {
+            if (bola.x + bola.radio >= canvas.width) {
+                bola.estaMoviendose = false;
+                boton.disabled = true;
+                drawGameOver();
+                return;
+            }
+            bola.x += bola.velocidad;
+            draw();
+            animationFrame = requestAnimationFrame(move);
+        }
+
+        // Mostrar "GAME OVER"
+        function drawGameOver() {
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "red";
+            ctx.fillText("GAME OVER", 150, 50);
+        }
+
+        // Manejar clic del botón
+        boton.addEventListener("click", () => {
+            if (bola.estaMoviendose) {
+                cancelAnimationFrame(animationFrame);
+                bola.estaMoviendose = false;
+            } else {
+                bola.estaMoviendose = true;
+                move();
+            }
+        });
+
+        // Dibujar la bola al cargar la página
+        draw();
+    </script>
+</body>
+</html>
+
+
+<!--
+/*
+          // Movemos el (0, 0) por defecto, dibujamos y guardamos el estado
+          ctx.translate(50,50);
+          ctx.fillStyle = 'black';
+          ctx.fillRect(0, 0, 100, 100);
+          ctx.save();
+          // Rotamos la plantlla por defecto, pintamos y cambiamos el color
+          ctx.rotate(-25);
+          ctx.fillStyle = 'red';
+          ctx.fillRect(0, 0, 100, 100);
+          // Recuperamos el estado anterior en el que no se habia rotado la 
+          // plantlla, escalamos la plantlla x2 y dibujamos un nuevo cuadrado
+          // consecutivo al anterior (50, 50) es el (0, 0).
+          ctx.restore();
+          ctx.scale(2, 2);
+          ctx.fillStyle = 'green';
+          ctx.fillRect(50, 50, 100, 100);
+/*
+          //Guardamos el primer rectangulo
+          /*ctx.fillRect(0, 0, 150, 150);
+          ctx.save();
+          // Guardamos el segundo rectangulo
+          ctx.fillStyle = '#09F'; 
+          ctx.fillRect(15, 15, 120, 120); 
+          ctx.save();
+          
+          ctx.fillStyle = '#FFF';
+          ctx.globalAlpha = 0.5; 
+          ctx.fillRect(30, 30, 90, 90); 
+          
+          ctx.restore(); // Restauramos el estado
+          ctx.fillRect(45, 45, 60, 60); // Dibujamos otro rectangulo
+          
+          ctx.restore(); // Restauramos el estado
+          ctx.fillRect(60, 60, 30, 30);
+*/
+          /* Img
+          const img = new Image();
+          img.src = "Reserva.jpg";
+
+          img.onload = function() {
+            ctx.drawImage(img, 50,50,300,300);
+          }
+          */
+          /* Text drawing
+          ctx.font="30px Arial";
+          ctx.fillText("Hello World",10,50);
+          ctx.font="30px New Times Roman";
+          ctx.strokeText("Hello World",10,100);
+          */
+
+          /* Triangle 
+          ctx.beginPath();
+          ctx.fillStyle = 'blue';
+          ctx.moveTo(25, 25); 
+          ctx.lineTo(25, 125); 
+          ctx.lineTo(125, 25); 
+          ctx.closePath(); 
+          ctx.stroke();
+          ctx.fill(); 
+
+          ctx.beginPath();
+          ctx.strokeStyle = 'green';
+          ctx.moveTo(150, 150);
+          ctx.lineTo(50, 150);
+          ctx.lineTo(150, 50);
+          ctx.closePath();
+          ctx.stroke(); */
+        
+
+          /*ctx.beginPath();
+          ctx.arc(200, 200, 50, 0, Math.PI); // Semicírculo
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(200, 200, 75, 0, Math.PI*2);
+          ctx.stroke();*/
+          
+          //ctx.fillRect(10,10,100,100);
+          //ctx.strokeRect(150,150,50,50);
+		  /*
+		  ctx.fillStyle = "rgb(200,0,0)";
+          ctx.fillRect (10, 10, 55, 50);
+
+          ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+          ctx.fillRect (30, 30, 55, 50);*/
+		//   ctx.fillRect(25, 25, 100, 100);
+    // ctx.clearRect(45, 45, 60, 60);
+    // ctx.strokeRect(50, 50, 50, 50);
+    -->
